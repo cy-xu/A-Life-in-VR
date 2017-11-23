@@ -25,6 +25,9 @@ public class SingleScreenControl : MonoBehaviour {
 	public float r;
 	public Transform eye;
 	public GameObject floatScreen;
+	private VideoPlayer currentScreen;
+	private GameObject newScreen;
+
 
 	void Start () 
 	{
@@ -45,10 +48,12 @@ public class SingleScreenControl : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		if (Input.GetKey (KeyCode.Q)) 
+		if (Input.GetKeyUp (KeyCode.Q)) 
 		{
 			spawnScreen ();
 		}
+
+
 
 		//		allTriggers = GameObject.FindWithTag ("videotriggers").GetComponent<BoxCollider> ();
 		//		Debug.Log (allTriggers);
@@ -68,7 +73,6 @@ public class SingleScreenControl : MonoBehaviour {
 
 //	IEnumerator loadVideo()
 //	{
-//		//videoplayer = gameObject.AddComponent<VideoPlayer> ();
 //		videoPlayer.playOnAwake = false;
 //		audioSource.playOnAwake = false;
 //		audioSource.Pause ();
@@ -78,14 +82,6 @@ public class SingleScreenControl : MonoBehaviour {
 //		//videoPlayer.clip = videoToPlay;
 //
 //		videoPlayer.url = playList [currentPlaying];
-//
-//		// go to next clip
-//		Debug.Log("Currently playing clip " + currentPlaying);
-//		if (currentPlaying < playList.Length) {
-//			currentPlaying++;
-//		} else {
-//			currentPlaying = 0;
-//		}
 //
 //		// audio related
 //		videoPlayer.audioOutputMode = VideoAudioOutputMode.AudioSource;
@@ -106,6 +102,7 @@ public class SingleScreenControl : MonoBehaviour {
 //			yield return null;
 //		}
 //	}
+
 //	void OnTriggerEnter(Collider other){
 //
 //		StartCoroutine (loadVideo());
@@ -116,13 +113,57 @@ public class SingleScreenControl : MonoBehaviour {
 //		}
 //	}
 
+	void loadVideo()
+	{
+		videoPlayer.playOnAwake = false;
+		audioSource.playOnAwake = false;
+		audioSource.Pause ();
+		//videoplayer.source = VideoSource.Url;
+		//videoplayer.url = "http://www.quirksmode.org/html5/videos/big_buck_bunny.mp4";
+		//videoPlayer.source = VideoSource.VideoClip;
+		//videoPlayer.clip = videoToPlay;
+
+		videoPlayer.url = playList [currentPlaying];
+
+		// audio related
+		videoPlayer.audioOutputMode = VideoAudioOutputMode.AudioSource;
+		videoPlayer.EnableAudioTrack (0, true);
+		videoPlayer.SetTargetAudioSource (0, audioSource);
+
+		//prepare video must be called after setting up audio
+		videoPlayer.Prepare ();
+
+	}
+
 	public void spawnScreen()
 	{
 		Vector3 pos = center + new Vector3(Random.Range(-r,r),Random.Range(1,r-2),Random.Range(-r,r));
-		Vector3 relativePos = pos - eye.position;
-		Instantiate (floatScreen, pos, Quaternion.LookRotation (-relativePos)); 
-	}
+		Vector3 relativePos = -(pos - eye.position);
 
+
+		newScreen = Instantiate (floatScreen, pos, Quaternion.LookRotation (relativePos)) as GameObject;
+
+//		currentScreen.AddComponent<VideoPlayer> ();
+//		StartCoroutine (loadVideo());
+		currentScreen = newScreen.GetComponent<VideoPlayer>();
+		videoPlayer = currentScreen;
+		audioSource = newScreen.GetComponent<AudioSource> ();
+
+		loadVideo();
+
+		if (!videoPlayer.isPlaying) {
+			videoPlayer.Play ();
+			audioSource.Play ();
+		}
+
+		// go to next clip
+		Debug.Log("Currently playing clip " + currentPlaying);
+		if (currentPlaying < playList.Length) {
+			currentPlaying++;
+		} else {
+			currentPlaying = 0;
+		}
+	}
 
 
 	//	void OnTriggerExit(Collider other)

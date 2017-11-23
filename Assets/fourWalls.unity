@@ -1000,6 +1000,7 @@ MonoBehaviour:
   eye: {fileID: 10585096}
   floatScreen: {fileID: 1048831784863950, guid: dd70d4ad331764b39ad3d0674f8edf22,
     type: 2}
+  currentScreen: {fileID: 0}
 --- !u!1 &1646028375
 GameObject:
   m_ObjectHideFlags: 0
