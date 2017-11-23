@@ -55,6 +55,7 @@
      <Compile Include="Assets\Scripts\CameraController.cs" />
      <Compile Include="Assets\Scripts\coroutineExample.cs" />
      <Compile Include="Assets\Scripts\MovementController.cs" />
+     <Compile Include="Assets\Scripts\SingleScreenControl.cs" />
      <Compile Include="Assets\Scripts\stepOn.cs" />
      <Compile Include="Assets\Scripts\StepOn2.cs" />
      <Compile Include="Assets\Scripts\Video_trigger.cs" />
