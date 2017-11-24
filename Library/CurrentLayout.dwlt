@@ -20,7 +20,7 @@ MonoBehaviour:
   m_ShowMode: 4
   m_Title: 
   m_RootView: {fileID: 2}
-  m_MinSize: {x: 950, y: 300}
+  m_MinSize: {x: 950, y: 542}
   m_MaxSize: {x: 10000, y: 10000}
 --- !u!114 &2
 MonoBehaviour:
@@ -232,7 +232,7 @@ MonoBehaviour:
   m_MinSize: {x: 436, y: 271}
   m_MaxSize: {x: 14006, y: 10021}
   vertical: 0
-  controlID: 77
+  controlID: 101
 --- !u!114 &11
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -419,9 +419,9 @@ MonoBehaviour:
   m_isRotationLocked: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 3.9178326, y: 7.9067383, z: -4.329683}
+    m_Target: {x: -1.2296548, y: 6.8881865, z: -4.0142636}
     speed: 2
-    m_Value: {x: 3.9178326, y: 7.9067383, z: -4.329683}
+    m_Value: {x: -1.2296548, y: 6.8881865, z: -4.0142636}
   m_RenderMode: 0
   m_ValidateTrueMetals: 0
   m_SceneViewState:
@@ -444,9 +444,9 @@ MonoBehaviour:
       speed: 2
       m_Value: 0
   m_Rotation:
-    m_Target: {x: -0.23633671, y: -0.25942746, z: 0.06563792, w: -0.9340953}
+    m_Target: {x: -0.3116365, y: 0.087346286, z: -0.028782154, w: -0.94574046}
     speed: 2
-    m_Value: {x: -0.23633671, y: -0.25942746, z: 0.06563792, w: -0.9340953}
+    m_Value: {x: -0.31163654, y: 0.08734629, z: -0.028782155, w: -0.9457405}
   m_Size:
     m_Target: 8.566167
     speed: 2
@@ -516,9 +516,9 @@ MonoBehaviour:
     height: 367
   m_TreeViewState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: a42a0000
-    m_LastClickedID: 0
-    m_ExpandedIDs: a0fbffff00000000262c0000
+    m_SelectedIDs: 322c0000
+    m_LastClickedID: 11314
+    m_ExpandedIDs: a4fbffffa6fbffff00000000222c0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -595,8 +595,7 @@ MonoBehaviour:
     height: 367
   m_SearchFilter:
     m_NameFilter: 
-    m_ClassNames:
-    - Prefab
+    m_ClassNames: []
     m_AssetLabels: []
     m_AssetBundleNames: []
     m_VersionControlStates: []
@@ -605,19 +604,20 @@ MonoBehaviour:
     m_ScenePaths: []
     m_ShowAllHits: 0
     m_SearchArea: 0
-    m_Folders: []
+    m_Folders:
+    - Assets/Resources/Videos
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets
+  - Assets/Resources/Videos
   m_LastFoldersGridSize: -1
   m_LastProjectPath: /Users/cyxu/Documents/Learn Unity/A-Life-in-VR
   m_IsLocked: 1
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 04ca9a3b
-    m_LastClickedID: 1000000004
-    m_ExpandedIDs: 000000009e27000012280000da2800009a290000582a0000cc2a0000fa2a0000a22c0000a42c0000a62c0000a82c0000aa2c0000ac2c0000ae2c000000ca9a3bffffff7f
+    m_SelectedIDs: 52280000
+    m_LastClickedID: 10322
+    m_ExpandedIDs: 00000000982700000c280000d428000094290000522a0000c62a0000f42a0000b02c0000b22c0000b42c0000b62c0000b82c0000ba2c0000bc2c000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -645,7 +645,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 702a0000
     m_LastClickedID: 10864
-    m_ExpandedIDs: 000000009e27000012280000da2800009a290000582a0000cc2a0000fa2a0000a22c0000a42c0000a62c0000a82c0000aa2c0000ac2c0000ae2c0000
+    m_ExpandedIDs: 00000000982700000c280000d428000094290000522a0000c62a0000f42a0000b02c0000b22c0000b42c0000b62c0000b82c0000ba2c0000bc2c0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -726,7 +726,7 @@ MonoBehaviour:
     y: 94
     width: 386
     height: 960
-  m_ScrollPosition: {x: 0, y: 223.67188}
+  m_ScrollPosition: {x: 0, y: 0}
   m_InspectorMode: 0
   m_PreviewResizer:
     m_CachedPref: 160

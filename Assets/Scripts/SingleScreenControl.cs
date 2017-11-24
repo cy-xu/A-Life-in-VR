@@ -28,6 +28,11 @@ public class SingleScreenControl : MonoBehaviour {
 	private VideoPlayer currentScreen;
 	private GameObject newScreen;
 
+	private bool isPlayerMoved = false;
+	private Vector3 position_prev;
+	private Vector3 position_curr;
+
+	private float nextFire=0.5f;
 
 	void Start () 
 	{
@@ -43,16 +48,44 @@ public class SingleScreenControl : MonoBehaviour {
 
 		//start a coroutine task
 		//		StartCoroutine (loadVideo());
+		position_prev = GameObject.Find("FPSController").transform.position;
 	}
 
 	// Update is called once per frame
 	void Update () {
 
-		if (Input.GetKeyUp (KeyCode.Q)) 
+		if (Time.time > nextFire) {
+			
+//		if (Input.GetKeyUp (KeyCode.Q)&&(videoPlayer==null||!videoPlayer.isPlaying)) 
+//		{
+//			spawnScreen ();
+//		}
+
+		position_curr = GameObject.Find("FPSController").transform.position;
+		float displacement = Mathf.Sqrt (Mathf.Pow (position_curr.x - position_prev.x, 2) + Mathf.Pow (position_curr.z - position_prev.z, 2));
+
+		print ("Current time " + Time.time + ", The displacement = " + displacement);
+		if (displacement > 2) {
+			isPlayerMoved = true;
+		} else {
+			isPlayerMoved = false;
+		}
+
+
+			nextFire = Time.time + 2;
+			position_prev = position_curr;
+		
+
+
+		if (isPlayerMoved&&(videoPlayer==null||!videoPlayer.isPlaying)) 
 		{
 			spawnScreen ();
 		}
 
+
+		}
+		// wait for video to finish
+		// position chagne 1 , then spawnScreen
 
 
 		//		allTriggers = GameObject.FindWithTag ("videotriggers").GetComponent<BoxCollider> ();
