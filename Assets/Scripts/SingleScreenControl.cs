@@ -15,8 +15,9 @@ public class SingleScreenControl : MonoBehaviour {
 //	public RawImage image;
 	public VideoClip videoToPlay;
 	public VideoPlayer videoPlayer;
-	//public VideoSource videoSource;
-	public string[] playList = new string[6];
+//	public VideoSource videoSource;
+//	public string[] playList = new string[22];
+	public string[] playList;
 	public AudioSource audioSource;
 	public int currentPlaying = 0;
 //	GameObject[] allTriggers;
@@ -25,37 +26,34 @@ public class SingleScreenControl : MonoBehaviour {
 	public float r;
 	public Transform eye;
 	public GameObject floatScreen;
-	private VideoPlayer currentScreen;
-	private GameObject newScreen;
+	public GameObject newScreen;
 
 	private bool isPlayerMoved = false;
 	private Vector3 position_prev;
 	private Vector3 position_curr;
-
-	private float nextFire=0.5f;
+	private float nextFire = 0.5f;
 
 	void Start () 
 	{
-		Application.runInBackground = true;
+//		Application.runInBackground = true;
 
 		// load all videos into playlist
-		for (int i = 0; i < playList.Length; i++) 
-		{
+		for (int i = 0; i < playList.Length; i++) {
 			playList [i] = "file://" + Application.dataPath + "/Resources/Videos/" + i + ".mp4";
 		}
 
 //		allTriggers = GameObject.FindGameObjectsWithTag ("videotriggers");
 
-		//start a coroutine task
-		//		StartCoroutine (loadVideo());
-		position_prev = GameObject.Find("FPSController").transform.position;
+			//start a coroutine task
+			//		StartCoroutine (loadVideo());
+		position_prev = GameObject.Find ("FPSController").transform.position;
 	}
 
 	// Update is called once per frame
 	void Update () {
 
 		if (Time.time > nextFire) {
-			
+
 //		if (Input.GetKeyUp (KeyCode.Q)&&(videoPlayer==null||!videoPlayer.isPlaying)) 
 //		{
 //			spawnScreen ();
@@ -64,24 +62,20 @@ public class SingleScreenControl : MonoBehaviour {
 		position_curr = GameObject.Find("FPSController").transform.position;
 		float displacement = Mathf.Sqrt (Mathf.Pow (position_curr.x - position_prev.x, 2) + Mathf.Pow (position_curr.z - position_prev.z, 2));
 
-		print ("Current time " + Time.time + ", The displacement = " + displacement);
-		if (displacement > 2) {
+//		print ("Current time " + Time.time + ", The displacement = " + displacement);
+		if (displacement > 1) {
 			isPlayerMoved = true;
 		} else {
 			isPlayerMoved = false;
 		}
 
-
-			nextFire = Time.time + 2;
+			nextFire = Time.time + 1;
 			position_prev = position_curr;
-		
-
-
+				
 		if (isPlayerMoved&&(videoPlayer==null||!videoPlayer.isPlaying)) 
 		{
 			spawnScreen ();
 		}
-
 
 		}
 		// wait for video to finish
@@ -114,6 +108,15 @@ public class SingleScreenControl : MonoBehaviour {
 //		//videoPlayer.source = VideoSource.VideoClip;
 //		//videoPlayer.clip = videoToPlay;
 //
+//
+//		// go to next clip
+//		Debug.Log("Currently playing clip " + currentPlaying);
+//		if (currentPlaying >= playList.Length) {
+//			currentPlaying = 0;
+//		} else {
+//			currentPlaying++;
+//		}
+//
 //		videoPlayer.url = playList [currentPlaying];
 //
 //		// audio related
@@ -124,15 +127,27 @@ public class SingleScreenControl : MonoBehaviour {
 //		//prepare video must be called after setting up audio
 //		videoPlayer.Prepare ();
 //
-//		while (!videoPlayer.isPrepared) {
-//			yield return null;
-//		}
+//		//Wait until video is prepared
+////		WaitForSeconds waitTime = new WaitForSeconds(1);
+////		while (!videoPlayer.isPrepared)
+////		{
+////			Debug.Log("Preparing Video");
+////			//Prepare/Wait for 5 sceonds only
+////			yield return waitTime;
+////			//Break out of the while loop after 5 seconds wait
+////			break;
+////		}
 //
 //		//the image when no video is playing
 ////		image.texture = videoPlayer.texture;
 //
 //		while (videoPlayer.isPlaying) {
 //			yield return null;
+//		}
+//
+//		if (!videoPlayer.isPlaying) {
+//			videoPlayer.Play ();
+//			audioSource.Play ();
 //		}
 //	}
 
@@ -146,56 +161,56 @@ public class SingleScreenControl : MonoBehaviour {
 //		}
 //	}
 
+
+
+	public void spawnScreen()
+	{
+		Vector3 pos = center + new Vector3(1.2f * Random.Range(-r,r),Random.Range(1,r-2),1.2f * Random.Range(-r,r));
+		Vector3 relativePos = eye.position - pos;
+		newScreen = Instantiate (floatScreen, pos, Quaternion.LookRotation (relativePos)) as GameObject;
+		print("cureent LookRotation is " + relativePos + ", screen pos is " + pos + "eye pos is" + eye.position);
+
+//		currentScreen.AddComponent<VideoPlayer> ();
+		videoPlayer = newScreen.GetComponent<VideoPlayer>();
+		audioSource = newScreen.GetComponent<AudioSource> ();
+
+//		StartCoroutine (loadVideo());
+		loadVideo();
+
+
+	}
+
 	void loadVideo()
 	{
+		// go to next clip
+		Debug.Log("Currently playing clip " + currentPlaying);
+		if (currentPlaying >= playList.Length) {
+			currentPlaying = 0;
+		} else {
+			currentPlaying++;
+		}
+
+		videoPlayer.url = playList [currentPlaying];
+
 		videoPlayer.playOnAwake = false;
 		audioSource.playOnAwake = false;
-		audioSource.Pause ();
+		//audioSource.Pause ();
+
 		//videoplayer.source = VideoSource.Url;
 		//videoplayer.url = "http://www.quirksmode.org/html5/videos/big_buck_bunny.mp4";
 		//videoPlayer.source = VideoSource.VideoClip;
 		//videoPlayer.clip = videoToPlay;
 
-		videoPlayer.url = playList [currentPlaying];
-
-		// audio related
+		//Set Audio Output to AudioSource
 		videoPlayer.audioOutputMode = VideoAudioOutputMode.AudioSource;
-		videoPlayer.EnableAudioTrack (0, true);
-		videoPlayer.SetTargetAudioSource (0, audioSource);
+
+		//Assign the Audio from Video to AudioSource to be played
+		videoPlayer.EnableAudioTrack (1, true);
+		videoPlayer.SetTargetAudioSource (1, audioSource);
 
 		//prepare video must be called after setting up audio
 		videoPlayer.Prepare ();
 
-	}
-
-	public void spawnScreen()
-	{
-		Vector3 pos = center + new Vector3(Random.Range(-r,r),Random.Range(1,r-2),Random.Range(-r,r));
-		Vector3 relativePos = -(pos - eye.position);
-
-
-		newScreen = Instantiate (floatScreen, pos, Quaternion.LookRotation (relativePos)) as GameObject;
-
-//		currentScreen.AddComponent<VideoPlayer> ();
-//		StartCoroutine (loadVideo());
-		currentScreen = newScreen.GetComponent<VideoPlayer>();
-		videoPlayer = currentScreen;
-		audioSource = newScreen.GetComponent<AudioSource> ();
-
-		loadVideo();
-
-		if (!videoPlayer.isPlaying) {
-			videoPlayer.Play ();
-			audioSource.Play ();
-		}
-
-		// go to next clip
-		Debug.Log("Currently playing clip " + currentPlaying);
-		if (currentPlaying < playList.Length) {
-			currentPlaying++;
-		} else {
-			currentPlaying = 0;
-		}
 	}
 
 
