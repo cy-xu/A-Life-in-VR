@@ -63,7 +63,7 @@ public class SingleScreenControl : MonoBehaviour {
 		float displacement = Mathf.Sqrt (Mathf.Pow (position_curr.x - position_prev.x, 2) + Mathf.Pow (position_curr.z - position_prev.z, 2));
 
 //		print ("Current time " + Time.time + ", The displacement = " + displacement);
-		if (displacement > 1) {
+		if (displacement > 0.5) {
 			isPlayerMoved = true;
 		} else {
 			isPlayerMoved = false;
@@ -98,58 +98,60 @@ public class SingleScreenControl : MonoBehaviour {
 //		}
 	}
 
-//	IEnumerator loadVideo()
-//	{
-//		videoPlayer.playOnAwake = false;
-//		audioSource.playOnAwake = false;
-//		audioSource.Pause ();
-//		//videoplayer.source = VideoSource.Url;
-//		//videoplayer.url = "http://www.quirksmode.org/html5/videos/big_buck_bunny.mp4";
-//		//videoPlayer.source = VideoSource.VideoClip;
-//		//videoPlayer.clip = videoToPlay;
-//
-//
-//		// go to next clip
-//		Debug.Log("Currently playing clip " + currentPlaying);
+	IEnumerator loadVideo()
+	{
+		videoPlayer.playOnAwake = false;
+		audioSource.playOnAwake = false;
+		audioSource.Pause ();
+		//videoplayer.source = VideoSource.Url;
+		//videoplayer.url = "http://www.quirksmode.org/html5/videos/big_buck_bunny.mp4";
+		//videoPlayer.source = VideoSource.VideoClip;
+		//videoPlayer.clip = videoToPlay;
+
+		// go to next clip
+		Debug.Log("Currently playing clip " + currentPlaying);
 //		if (currentPlaying >= playList.Length) {
-//			currentPlaying = 0;
-//		} else {
-//			currentPlaying++;
+		if (currentPlaying >= 3) {
+//			GameObject allScreens = GameObject.FindGameObjectsWithTag('floatScreenTag');
+//			allScreens.AddComponent<rigidbody>;
+			Destroy(GameObject.Find ("Plane"), 2.0f);
+		} else {
+			currentPlaying++;
+		}
+
+		videoPlayer.url = playList [currentPlaying];
+
+		// audio related
+		videoPlayer.audioOutputMode = VideoAudioOutputMode.AudioSource;
+		videoPlayer.EnableAudioTrack (0, true);
+		//videoPlayer.SetTargetAudioSource (0, audioSource);
+
+		//prepare video must be called after setting up audio
+		videoPlayer.Prepare ();
+
+		//Wait until video is prepared
+//		WaitForSeconds waitTime = new WaitForSeconds(1);
+//		while (!videoPlayer.isPrepared)
+//		{
+//			Debug.Log("Preparing Video");
+//			//Prepare/Wait for 5 sceonds only
+//			yield return waitTime;
+//			//Break out of the while loop after 5 seconds wait
+//			break;
 //		}
-//
-//		videoPlayer.url = playList [currentPlaying];
-//
-//		// audio related
-//		videoPlayer.audioOutputMode = VideoAudioOutputMode.AudioSource;
-//		videoPlayer.EnableAudioTrack (0, true);
-//		videoPlayer.SetTargetAudioSource (0, audioSource);
-//
-//		//prepare video must be called after setting up audio
-//		videoPlayer.Prepare ();
-//
-//		//Wait until video is prepared
-////		WaitForSeconds waitTime = new WaitForSeconds(1);
-////		while (!videoPlayer.isPrepared)
-////		{
-////			Debug.Log("Preparing Video");
-////			//Prepare/Wait for 5 sceonds only
-////			yield return waitTime;
-////			//Break out of the while loop after 5 seconds wait
-////			break;
-////		}
-//
-//		//the image when no video is playing
-////		image.texture = videoPlayer.texture;
-//
-//		while (videoPlayer.isPlaying) {
-//			yield return null;
-//		}
-//
-//		if (!videoPlayer.isPlaying) {
-//			videoPlayer.Play ();
-//			audioSource.Play ();
-//		}
-//	}
+
+		//the image when no video is playing
+//		image.texture = videoPlayer.texture;
+
+		while (videoPlayer.isPlaying) {
+			yield return null;
+		}
+
+		if (!videoPlayer.isPlaying) {
+			videoPlayer.Play ();
+			//audioSource.Play ();
+		}
+	}
 
 //	void OnTriggerEnter(Collider other){
 //
@@ -161,8 +163,6 @@ public class SingleScreenControl : MonoBehaviour {
 //		}
 //	}
 
-
-
 	public void spawnScreen()
 	{
 		Vector3 pos = center + new Vector3(1.2f * Random.Range(-r,r),Random.Range(1,r-2),1.2f * Random.Range(-r,r));
@@ -172,46 +172,47 @@ public class SingleScreenControl : MonoBehaviour {
 
 //		currentScreen.AddComponent<VideoPlayer> ();
 		videoPlayer = newScreen.GetComponent<VideoPlayer>();
-		audioSource = newScreen.GetComponent<AudioSource> ();
+		audioSource = newScreen.GetComponent<AudioSource>();
 
-//		StartCoroutine (loadVideo());
-		loadVideo();
+		StartCoroutine (loadVideo());
+//		loadVideo();
 
-
-	}
-
-	void loadVideo()
-	{
-		// go to next clip
-		Debug.Log("Currently playing clip " + currentPlaying);
-		if (currentPlaying >= playList.Length) {
-			currentPlaying = 0;
-		} else {
-			currentPlaying++;
-		}
-
-		videoPlayer.url = playList [currentPlaying];
-
-		videoPlayer.playOnAwake = false;
-		audioSource.playOnAwake = false;
-		//audioSource.Pause ();
-
-		//videoplayer.source = VideoSource.Url;
-		//videoplayer.url = "http://www.quirksmode.org/html5/videos/big_buck_bunny.mp4";
-		//videoPlayer.source = VideoSource.VideoClip;
-		//videoPlayer.clip = videoToPlay;
-
-		//Set Audio Output to AudioSource
-		videoPlayer.audioOutputMode = VideoAudioOutputMode.AudioSource;
-
-		//Assign the Audio from Video to AudioSource to be played
-		videoPlayer.EnableAudioTrack (1, true);
-		videoPlayer.SetTargetAudioSource (1, audioSource);
-
-		//prepare video must be called after setting up audio
-		videoPlayer.Prepare ();
 
 	}
+
+//	void loadVideo()
+//	{
+//		// go to next clip
+//		Debug.Log("Currently playing clip " + currentPlaying);
+//		if (currentPlaying < playList.Length) {
+//			currentPlaying++;
+//		} else {
+//			// currentPlaying = 0;
+//			Destroy(GameObject.Find ("Plane"), 2.0f);
+//		}
+//
+//		videoPlayer.url = playList [currentPlaying];
+//
+//		videoPlayer.playOnAwake = false;
+//		audioSource.playOnAwake = false;
+//		//audioSource.Pause ();
+//
+//		//videoplayer.source = VideoSource.Url;
+//		//videoplayer.url = "http://www.quirksmode.org/html5/videos/big_buck_bunny.mp4";
+//		//videoPlayer.source = VideoSource.VideoClip;
+//		//videoPlayer.clip = videoToPlay;
+//
+//		//Set Audio Output to AudioSource
+//		videoPlayer.audioOutputMode = VideoAudioOutputMode.AudioSource;
+//
+//		//Assign the Audio from Video to AudioSource to be played
+//		videoPlayer.EnableAudioTrack (1, true);
+//		videoPlayer.SetTargetAudioSource (1, audioSource);
+//
+//		//prepare video must be called after setting up audio
+//		videoPlayer.Prepare ();
+//
+//	}
 
 
 	//	void OnTriggerExit(Collider other)
